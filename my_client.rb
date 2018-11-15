@@ -2,7 +2,7 @@ require "socket"
 
 class Chat
     attr_accessor :host, :port
-    def initialize(host="192.168.3.7", port=40000)
+    def initialize(host="", port=40000)
         @host = host
         @port = port
     end
