@@ -2,7 +2,7 @@ require "socket"
 
 class Chat
     attr_accessor :host, :port, :n_memo
-    def initialize(host="192.168.3.7", port=40000, n_memo=10)
+    def initialize(host="", port=40000, n_memo=10)
         @host = host
         @port = port
         @n_memo = n_memo
