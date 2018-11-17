@@ -25,7 +25,7 @@ ObjectSpace::each_object(IO) { |io| io.close() unless io.closed?() }
 require "socket"                      # ソケット通信用ライブラリ
 require "thread"                      # マルチスレッド用ライブラリ
 
-host = "192.168.3.7"
+host = ENV["th_ip"]
                                       # 自分のホストネームを取得
 port = 40000                          # 伝言板サービスは 40000 番
 $entry = TCPServer::open(host, port)  # 40000 番に受け付け窓口を開く
