@@ -14,7 +14,7 @@ host = ARGV[0]  # コマンドライン引数をホスト名に
 host = "192.168.3.7"
 # host == nil なら自分のホスト名
 
-timeout(5) { $sock = TCPSocket::open(host, port) } # サーバへ $sock を接続
+Timeout.timeout(5) { $sock = TCPSocket::open(host, port) } # サーバへ $sock を接続
 $sock.puts(Etc::getlogin())                        # login 名をサーバへ送る
 
 ###############################################################################
