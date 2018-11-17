@@ -70,23 +70,25 @@ while (true)
                                         ## n が範囲外なら ERR を返す
                                         sock.puts("ERR")
                                 elsif ($memo_text[n] == nil &&
-                                                $memo_lock[n].try_lock())
+                                                $memo_lock[n].locked? == false)
+                                        $memo_lock[n].synchronize {
                                         ## 番号 n の伝言が nil で、かつ、
                                         ## ロック出来ればここ
-                                        $memo_date[n] = Time::now()
-                                        $memo_from[n] = from
-                                        $memo_pass[n] = pass
-                                        text = ""
-                                        while (line = sock.gets())
-                                                ## クライアントからの入力を
-                                                ## ピリオドのみの行まで読む
-                                                if (line == ".\n")
-                                                        break
-                                                end
-                                                text += line
-                                        end
-                                        $memo_text[n] = text
-                                        sock.puts("OK")
+                                            $memo_date[n] = Time::now()
+                                            $memo_from[n] = from
+                                            $memo_pass[n] = pass
+                                            text = ""
+                                            while (line = sock.gets())
+                                                    ## クライアントからの入力を
+                                                    ## ピリオドのみの行まで読む
+                                                    if (line == ".\n")
+                                                            break
+                                                    end
+                                                    text += line
+                                            end
+                                            $memo_text[n] = text
+                                            sock.puts("OK")
+                                        }
                                 else
                                         ## 伝言が nil でない。または、
                                         ## ロック出来ないときはここ
@@ -124,13 +126,16 @@ while (true)
                                         sock.puts("ERR")
                                 elsif ($memo_text[n])
                                         if (pass == $memo_pass[n])
-                                                if ($memo_lock[n].unlock() == nil)
+                                                if ($memo_lock[n].locked? ==
+false)
+                                                        $memo_lock[n].synchronize {
                                                         ## ロックの解除
-                                                        $memo_date[n] = nil
-                                                        $memo_from[n] = nil
-                                                        $memo_pass[n] = nil
-                                                        $memo_text[n] = nil
-                                                        sock.puts("OK")
+                                                            $memo_date[n] = nil
+                                                            $memo_from[n] = nil
+                                                            $memo_pass[n] = nil
+                                                            $memo_text[n] = nil
+                                                            sock.puts("OK")
+                                                        }
                                                 else
                                                         sock.puts("ERR")
                                                 end
