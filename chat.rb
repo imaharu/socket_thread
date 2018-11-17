@@ -1,6 +1,6 @@
 class Chat
-    attr_accessor :host, :port, :n_memo
-    def initialize(host="", port=40000)
+    attr_accessor :host, :port
+    def initialize(host=ENV["th_ip"], port=40000)
         @host = host
         @port = port
     end
